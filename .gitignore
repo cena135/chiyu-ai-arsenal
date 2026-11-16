@@ -1,0 +1,34 @@
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs and runtime artifacts
+*.log
+*.tmp
+*.temp
+.system_generated/
+scratch/
+
+# Environments & secrets (extra guard)
+*.env
+*.env.*
+*.pem
+*.key
+AI_API_SECRETS.md
+CEO_MEMORY.md
+*_INFRASTRUCTURE_BIBLE.md
+CHIYU_CLERK_SSO.md
+*CLERK_SSO.md
+*SECRETS*.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
