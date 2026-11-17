@@ -3,10 +3,10 @@ import fs from "node:fs";
 const ALLOW = JSON.stringify({ decision: "allow" });
 
 const DENY_PATTERNS = [
-  /(?:^|[;&|\r\n])\s*(?:Start-Process\b[^\r\n;|]*-Verb\s+RunAs\b|New-Object\b[^\r\n;|]*-ComObject\s+["']?Shell\.Application)/i,
-  /(?:^|[;&|\r\n])\s*docker(?:-compose|\s+compose)\s+down\b[^\r\n;|]*(?:\s-v\b|\s--volumes\b)/i,
-  /(?:^|[;&|\r\n])\s*docker\s+(?:volume\s+(?:rm|prune)|system\s+prune)\b/i,
-  /(?:^|[;&|\r\n])\s*(?:npx\s+|bunx\s+|pnpm\s+dlx\s+)?(?:prisma\s+(?:migrate\s+reset|db\s+push\b[^\r\n;|]*--force-reset)|drizzle-kit\s+drop)\b/i
+  /(?:^|[;&|\r\n])\s*(?:(?:powershell|pwsh|cmd(?:\.exe)?)\b[^\r\n]*?)?(?:Start-Process\b[^\r\n;|]*-Verb\s+RunAs\b|New-Object\b[^\r\n;|]*-ComObject\s+["']?Shell\.Application)/i,
+  /(?:^|[;&|\r\n])\s*(?:(?:powershell|pwsh|cmd(?:\.exe)?|bash|sh)\b[^\r\n]*?)?docker(?:-compose|\s+compose)\b[^\r\n;|]*\sdown\b[^\r\n;|]*(?:\s-v\b|\s--volumes\b)/i,
+  /(?:^|[;&|\r\n])\s*(?:(?:powershell|pwsh|cmd(?:\.exe)?|bash|sh)\b[^\r\n]*?)?docker\s+(?:volume\s+(?:rm|prune)|system\s+prune)\b/i,
+  /(?:^|[;&|\r\n])\s*(?:(?:powershell|pwsh|cmd(?:\.exe)?|bash|sh)\b[^\r\n]*?)?(?:npx\s+|bunx\s+|pnpm\s+dlx\s+)?(?:prisma\s+(?:migrate\s+reset|db\s+push\b[^\r\n;|]*--force-reset)|drizzle-kit\s+drop)\b/i
 ];
 
 function respond(payload) {
@@ -26,7 +26,7 @@ try {
 
   if (toolCall?.name === "invoke_subagent") {
     const model = String(toolCall?.args?.Model ?? "").trim().toLowerCase();
-    if (!model || model === "inherit" || model === "pro") {
+    if (model !== "flash" && model !== "flash_lite") {
       respond({
         decision: "deny",
         reason: "Argon/Pro Quota Shield (Out-of-Band Hook): invoke_subagent wajib menyertakan Model: 'flash' atau 'flash_lite' (haram 'pro' atau 'inherit')."

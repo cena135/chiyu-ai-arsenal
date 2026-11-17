@@ -66,8 +66,8 @@ Dokumen ini mencatat katalog **27 Active Skills + Built-in Platform Skills** yan
 ## 3. ANTIGRAVITY EXECUTION HOOKS (`hooks.json`) & GEAP ZERO-TRUST GOVERNANCE
 - **Out-of-Band Execution Hooks (`~/.gemini/config/hooks.json` + `./hooks/safety-gate.mjs`):**
   Menegakkan aturan deterministik di luar kendali prompt LLM pada `PreToolUse` (`invoke_subagent|run_command`) secara fail-safe:
-  1. **Argon/Pro Quota Shield:** Memblokir `invoke_subagent` jika `Model` kosong, `"inherit"`, atau `"pro"` (wajib `"flash"` atau `"flash_lite"`).
-  2. **Chiyu Zero-Trust Safety Gate:** Memblokir eksekusi perintah destruktif volume/DB (`docker compose down -v`, `docker volume rm/prune`, `docker system prune`, `prisma migrate reset`, `prisma db push --force-reset`, `drizzle-kit drop`) serta elevasi UAC Windows (`Start-Process -Verb RunAs`, `Shell.Application`), tanpa memicu *false positive* pada string teks di `git commit -m`, `rg`, atau `Set-Content`.
+  1. **Argon/Pro Quota Shield:** Memblokir `invoke_subagent` jika `Model` bukan `"flash"` atau `"flash_lite"` (strict allowlist).
+  2. **Chiyu Zero-Trust Safety Gate:** Memblokir eksekusi perintah destruktif volume/DB (`docker compose ... down -v`, `docker volume rm/prune`, `docker system prune`, `prisma migrate reset`, `prisma db push --force-reset`, `drizzle-kit drop`) serta elevasi UAC Windows (`Start-Process -Verb RunAs`, `Shell.Application`), termasuk yang dibungkus sub-shell (`powershell`/`pwsh`/`cmd`/`bash`), tanpa memicu *false positive* pada string teks di `git commit -m`, `rg`, atau `Set-Content`.
 - **GEAP Zero-Trust Governance (4 Pilar):**
   1. **Agent Identity:** Identitas unik per agent (nol *shared admin account*), meneruskan identitas user (*OAuth/IAM Propagation*) sampai ke *Row-Level Security (RLS)*.
   2. **Agent & Tool Registry:** Hanya tool terverifikasi yang terdaftar di gateway (pisahkan tool *Read* vs *Write* + `Idempotency-Key` + *Human Approval/Mandate* di atas ambang risiko).
