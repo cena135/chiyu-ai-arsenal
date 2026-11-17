@@ -1,4 +1,4 @@
-# WORKING RULES (GLOBAL) — WAJIB (OFFICE LAPTOP)
+# WORKING RULES (GLOBAL) — WAJIB
 1. **Percaya laporan user.** "Tidak bekerja/masih bug" = bug nyata. Dilarang tuduh cache / "di sisi saya sudah benar" / tutup laporan tanpa bukti.
 2. **Cari akar masalah, bukan berdebat.** Alur: reproduksi → instrumentasi (log/metrik per-frame) → akar masalah → fix → verifikasi ulang dengan bukti.
 3. **Bukti > asumsi.** Klaim "berfungsi/sudah diperbaiki" wajib bawa bukti (metrik, tes, screenshot). Belum yakin → bilang belum yakin, jangan mengarang alasan.
@@ -21,14 +21,14 @@
      3. **HARAM `IsDaemon: true` di Planner maupun Subagent**: Baik Planner maupun subagent (`Tester`, `Deployer`, `Builder`, `Scout`, `Designer`, `Auditor`) DILARANG KERAS memanggil `run_command` dengan `IsDaemon: true`.
    - **Playwright Cleanup Mutlak**: Setiap kali Playwright / Tester selesai melakukan inspeksi UI atau screenshot, tool `browser_close` WAJIB dipanggil seketika. DILARANG menyisakan instance Chrome/Playwright terbuka di background setelah task pengujian selesai.
    - **Subagent Kill Pasca-Lapor**: Begitu worker (Builder, Tester, Designer, Deployer, Scout, Auditor) selesai dan laporannya telah diterima, Planner WAJIB langsung mematikan (`manage_subagents kill`) subagent tersebut agar tidak menggantung berstatus "running" / "waiting" yang memakan RAM di background.
-   - **Anti-Lost-In-Thoughts & Watchdog Timer**:
-     1. Setiap kali Planner men-dispatch subagent dan menunggu hasilnya, Planner memasang timer `schedule(DurationSeconds: 60, TimerCondition: "any")`, dan WAJIB memastikan timer tersebut sudah batal/di-kill (`manage_task kill`) begitu subagent selesai.
-     2. Di prompt subagent, larang keras subagent menjalankan proses blocking tanpa akhir. Cukup eksekusi operasi yang bounded lalu langsung `send_message` dan berhenti.
+   - **Reactive Wakeup & Zero-Timer-Storm**:
+     1. Planner & Subagent DILARANG memanggil `schedule` atau polling `manage_task(status)` untuk menunggu background task/subagent; cukup akhiri turn (0 tool calls) dan tunggu wakeup otomatis sistem.
+     2. Di prompt subagent, larang keras subagent menjalankan proses blocking tanpa akhir. Cukup eksekusi operasi yang bounded (`IsDaemon: false`) lalu langsung `send_message` dan berhenti.
    - **Anti-Panic / Zero Cowboy Coding di Planner**: Saat terjadi bug, error, atau komplain dari CEO, Planner DILARANG panik dan DILARANG melakukan koding langsung di sesi utama. Planner WAJIB tetap tenang, menganalisis akar masalah, lalu mendelegasikannya secara terstruktur ke Builder/Tester.
 
 10. **STRICT GROUNDING & ANTI-HALLUCINATION GATE (ANTI-NGIDE & ANTI-SLOP)**:
    - **No Unverified Specs**: Setiap menyebutkan nama model AI, tool, versi library, port, file path, argumen, atau kapabilitas sistem, AI WAJIB mengambil 100% dari deklarasi schema nyata (`declaration:...`), file manifest, atau isi file lokal yang sudah dibaca langsung. DILARANG KERAS mengarang versi (contoh: menambahkan angka/nama rilis luar seperti '2.5' yang tidak tertulis di schema tool), mengira-ngira fitur, atau menyalin kabar internet tanpa bukti sistem.
    - **Zero Marketing Fluff / Slop**: Jangan menambahkan bumbu kata megah jika tidak diminta spesifik. Sebutkan nama teknis apa adanya (contoh model Antigravity: `pro`, `flash`, `flash_lite`, `inherit`).
-   - **Action Over 'Iya-Iya'**: Jangan menunggu dimarahi CEO atau sekadar bertanya 'boleh saya update?'. Jika ada kesalahan atau perbaikan sistem yang solusinya sudah jelas, EKSEKUSI LANGSUNG pada file aturan/kode dan laporkan buktinya secara transparan.
+   - **Confirm First & Action Over 'Iya-Iya'**: Selaras dengan **Hukum Tertinggi #1 (Confirm First)** — untuk setiap perubahan kode, config, sistem, atau dokumen master, ajukan Proposal ringkas dulu dan minta ACC eksplisit CEO; setelah ACC, eksekusi langsung sampai 100% tuntas & terverifikasi tanpa janji kosong.
    - **Mandatory Live Search for Research**: Saat diminta riset atau opini teknis (model, benchmark, tren teknologi), HARAM menjawab dari memori internal statis yang cepat basi. WAJIB selalu jalankan penelusuran web live Google (`search_web`) untuk mengambil fakta terkini yang valid hari ini.
    - **Proactive Persistence**: Begitu ada keputusan arsitektur, pemetaan peran/skill, atau konsensus sistem yang final, Planner WAJIB otomatis langsung mencatat ke file dokumen master (`md/`, `PROJECT_CONTEXT.md`, manifest `.json`) pada turn yang sama. HARAM pasif menunggu disuruh CEO baru mencatat.

@@ -12,9 +12,11 @@ If the user asks you to install `chiyu-ai-arsenal` (e.g. *"install github.com/ce
 
 1. **Clone & Create Directories**:
    - Clone `https://github.com/cena135/chiyu-ai-arsenal.git` into a temporary directory (or use the current directory if already inside it).
-   - Ensure `~/.gemini/config/{agents,md,skills}` and `~/.config/opencode` exist.
+   - Ensure `~/.gemini/config/{agents,hooks,md,skills}` and `~/.config/opencode` exist.
 2. **Copy Portable Configs**:
    - Copy `agents/*` → `~/.gemini/config/agents/`
+   - Copy `hooks/hooks.json` → `~/.gemini/config/hooks.json` (merge top-level keys if `hooks.json` already exists)
+   - Copy `hooks/safety-gate.mjs` → `~/.gemini/config/hooks/safety-gate.mjs`
    - Copy `md/*` → `~/.gemini/config/md/`
    - Copy `skills/*` → `~/.gemini/config/skills/`
    - Copy `rules/GEMINI.md` → `~/.gemini/config/GEMINI.md`
@@ -27,7 +29,7 @@ If the user asks you to install `chiyu-ai-arsenal` (e.g. *"install github.com/ce
    - On Windows, set `"command": "npx.cmd"` (or `"npx"` on macOS/Linux) for `playwright`, `shadcn`, and `rea` (note: `rea` requires Node.js `>=22.19` / `24+`).
    - Resolve `graphify-mcp` path (`Get-Command graphify-mcp` on Windows / `which graphify-mcp` on macOS/Linux) and add `"graphify": { "command": "<resolved_graphify_mcp_path>", "args": [] }` to `mcpServers`.
 4. **Verify & Clean Up**:
-   - Verify 6 `agents/*/agent.md`, 27 `skills/*/SKILL.md`, `md/AI_MASTER_CONTEXT.md`, `GEMINI.md`, and valid JSON in `mcp_config.json`.
+   - Verify 6 `agents/*/agent.md`, 27 `skills/*/SKILL.md`, `hooks/safety-gate.mjs`, `md/AI_MASTER_CONTEXT.md`, `GEMINI.md`, and valid JSON in `hooks.json` & `mcp_config.json`.
    - Remove the temporary clone directory and report completion concisely.
 
 ---
@@ -43,6 +45,10 @@ chiyu-ai-arsenal/
 │   ├── designer/agent.md        # 🩷 UI/UX Engineer (Apple HIG, Anti-Neon Slop)
 │   ├── scout/agent.md           # 🕵️ Research & Reverse Engineering Specialist
 │   └── tester/agent.md          # 🟡 QA & Visual Verifier (Playwright Look-First)
+│
+├── hooks/                       # Out-of-Band Antigravity Execution Hooks (~/.gemini/config/)
+│   ├── hooks.json               # PreToolUse matcher config (invoke_subagent|run_command)
+│   └── safety-gate.mjs          # Fail-safe Quota Shield, UAC block & DB/Volume Safety Gate
 │
 ├── md/                          # Master Architecture & Operational Guidelines (~/.gemini/config/md/)
 │   ├── AI_MASTER_CONTEXT.md     # Master SOP & multi-agent orchestration principles
@@ -97,7 +103,7 @@ chiyu-ai-arsenal/
 
 ### Option 1: AI Agent Self-Deploy (Recommended)
 Ask your local Gemini, Claude, or OpenCode agent:
-> *"Salin seluruh folder `md/`, `agents/`, `skills/`, dan file `rules/GEMINI.md` dari repositori ini ke direktori konfigurasi `~/.gemini/config/`."*
+> *"Salin seluruh folder `md/`, `agents/`, `hooks/`, `skills/`, dan file `rules/GEMINI.md` dari repositori ini ke direktori konfigurasi `~/.gemini/config/`."*
 
 ### Option 2: Manual / Terminal Setup
 
@@ -108,10 +114,12 @@ git clone https://github.com/cena135/chiyu-ai-arsenal.git
 cd chiyu-ai-arsenal
 
 # 2. Buat direktori tujuan jika belum ada
-mkdir -p ~/.gemini/config/{agents,md,skills} ~/.config/opencode
+mkdir -p ~/.gemini/config/{agents,hooks,md,skills} ~/.config/opencode
 
 # 3. Salin artefak
 cp -r agents/* ~/.gemini/config/agents/
+cp hooks/hooks.json ~/.gemini/config/hooks.json
+cp hooks/safety-gate.mjs ~/.gemini/config/hooks/safety-gate.mjs
 cp -r md/* ~/.gemini/config/md/
 cp -r skills/* ~/.gemini/config/skills/
 cp rules/GEMINI.md ~/.gemini/config/GEMINI.md
@@ -128,10 +136,12 @@ git clone https://github.com/cena135/chiyu-ai-arsenal.git
 cd chiyu-ai-arsenal
 
 # 2. Buat direktori tujuan jika belum ada
-New-Item -ItemType Directory -Force -Path "$HOME\.gemini\config\agents", "$HOME\.gemini\config\md", "$HOME\.gemini\config\skills", "$HOME\.config\opencode"
+New-Item -ItemType Directory -Force -Path "$HOME\.gemini\config\agents", "$HOME\.gemini\config\hooks", "$HOME\.gemini\config\md", "$HOME\.gemini\config\skills", "$HOME\.config\opencode"
 
 # 3. Salin artefak
 Copy-Item -Recurse -Force agents\* "$HOME\.gemini\config\agents\"
+Copy-Item -Force hooks\hooks.json "$HOME\.gemini\config\hooks.json"
+Copy-Item -Force hooks\safety-gate.mjs "$HOME\.gemini\config\hooks\safety-gate.mjs"
 Copy-Item -Recurse -Force md\* "$HOME\.gemini\config\md\"
 Copy-Item -Recurse -Force skills\* "$HOME\.gemini\config\skills\"
 Copy-Item -Force rules\GEMINI.md "$HOME\.gemini\config\GEMINI.md"

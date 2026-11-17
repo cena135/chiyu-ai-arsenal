@@ -1,0 +1,17 @@
+{
+  "chiyu-safety-and-quota-gate": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "invoke_subagent|run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./hooks/safety-gate.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

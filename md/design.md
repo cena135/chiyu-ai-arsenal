@@ -59,7 +59,7 @@ Jika kamu menggunakan Claude Code / Gemini, disarankan untuk menginstal *skill* 
 ---
 
 ## 4. ENSIKLOPEDIA GAYA DESAIN SUPER LENGKAP
-AI **WAJIB** memahami 15+ spesifikasi visual di bawah ini. Secara default (jika user tidak meminta gaya khusus), gunakan **Vercel / Linear App Style** (bersih, high-contrast, minimal). Ketika CEO meminta gaya tertentu, AI harus mengimplementasikan CSS/Tailwind dengan akurat sesuai definisi berikut agar tidak terlihat seperti *template* AI murahan.
+AI **WAJIB** memahami 15+ spesifikasi visual di bawah ini. Secara default (jika CEO tidak meminta gaya khusus), gunakan **Vercel / Linear App Style** (bersih, high-contrast, minimal). Ketika CEO meminta gaya tertentu, AI harus mengimplementasikan CSS/Tailwind dengan akurat sesuai definisi berikut agar tidak terlihat seperti *template* AI murahan.
 
 ### 4.1. Liquid Glass
 - **Karakteristik:** Ilusi cairan tebal, refraksi cahaya, dan distorsi lingkungan sekitar. Memiliki efek cembung seperti tetesan air (*water droplet*).
@@ -241,7 +241,7 @@ Sebelum sebuah website dilepas ke publik (Production), AI WAJIB memastikan 7 ele
 
 
 ## ARSENAL UI PRO MAX (WAJIB UNTUK ANIMASI)
-Jika CEO meminta UI yang canggih, interaktif, atau beranimasi (Awwwards level), Prompter WAJIB meracik kombinasi ini:
+Jika CEO meminta UI yang canggih, interaktif, atau beranimasi (Awwwards level), Designer WAJIB meracik kombinasi ini:
 1. **Lenis:** Untuk Smooth Scrolling.
 2. **GSAP (ScrollTrigger):** Untuk animasi elemen berbasis scroll.
 3. **Vanta.js:** Untuk efek background 3D instan (jika diminta).
@@ -265,7 +265,7 @@ CEO **TIDAK PERLU** membuka website ReactBits, Magic UI, Aceternity, atau Kokonu
 
 
 ## IMMERSIVE & SPATIAL WEB UX (THE OPUS STANDARD)
-Jika CEO meminta website yang 'immersive', 'mewah', 'interaktif tingkat tinggi', atau 'sekelas Awwwards', Prompter WAJIB merancang arsitektur yang menggabungkan DOM dan Canvas:
+Jika CEO meminta website yang 'immersive', 'mewah', 'interaktif tingkat tinggi', atau 'sekelas Awwwards', Designer WAJIB merancang arsitektur yang menggabungkan DOM dan Canvas:
 1. **Layer WebGL/Canvas:** Wajib gunakan React Three Fiber (R3F) atau Three.js untuk elemen background yang reaktif (seperti partikel, fluid simulation, atau objek 3D).
 2. **GLSL Shaders:** Gunakan custom shaders untuk efek distorsi kursor, efek hover pada gambar (magnetic/liquid hover).
 3. **Koreografi Scroll:** Wajib gunakan GSAP ScrollTrigger dan Lenis. Elemen 3D di layer Canvas harus bereaksi terhadap posisi scroll dari DOM.
@@ -273,7 +273,7 @@ Jika CEO meminta website yang 'immersive', 'mewah', 'interaktif tingkat tinggi',
 
 
 ## EKSPANSI ARSENAL MICRO-INTERACTIONS & DATA VIZ
-Selain WebGL dan GSAP, Prompter WAJIB mempertimbangkan stack berikut untuk UI/UX tingkat dewa:
+Selain WebGL dan GSAP, Designer WAJIB mempertimbangkan stack berikut untuk UI/UX tingkat dewa:
 1. **Motion.dev (Framer Motion):** Engine utama untuk micro-interactions (spring physics, layout transitions, exit animations). Jangan pakai CSS statis untuk state perubahan DOM.
 2. **Skiper UI (skiper-ui.com):** Referensi utama untuk komponen shadcn/ui yang memiliki animasi kompleks dan 'uncommon' (cocok untuk SaaS/AI landing page).
 3. **Bklit UI (bklit.com):** Referensi mutlak untuk Visualisasi Data dan Chart. Jangan gunakan library chart standar, gunakan Bklit yang berbasis shadcn untuk konsistensi desain yang elegan.
@@ -316,6 +316,13 @@ Dilarang memakai foto sepatu untuk produk elektronik! Wajib pilih URL sesuai dom
 
 
 ## 10. STRICT PERFORMANCE & ZERO-LAG INTERACTION DISCIPLINE
-1. **Zero-Lag Button Press Physics**: HARAM menggunakan React useState (seperti setPressed, isActive) untuk menangani animasi tombol saat ditekan. WAJIB menggunakan CSS murni :active / Tailwind ctive:scale-95 active:translate-y-0.5 cursor-pointer untuk mendapatkan respon 0ms instan tanpa re-render komponen.
+1. **Zero-Lag Button Press Physics**: HARAM menggunakan React useState (seperti setPressed, isActive) untuk menangani animasi tombol saat ditekan. WAJIB menggunakan CSS murni :active / Tailwind active:scale-95 active:translate-y-0.5 cursor-pointer untuk mendapatkan respon 0ms instan tanpa re-render komponen.
 2. **120 FPS GPU Composited Animations**: Semua elemen latar belakang yang bergerak (blobs, floating shapes, particles) WAJIB memiliki properti CSS will-change: transform; transform: translate3d(0, 0, 0); agar dikomposisikan oleh GPU dan tidak memicu reflow/repaint CPU.
 3. **Optimized Shadow Blurs**: Jangan gunakan filter blur SVG atau blur berantai berlebihan di atas 40px pada elemen yang terus bergerak.
+
+---
+
+## 11. A2UI (AGENT-TO-USER INTERFACE) & GENERATIVE UI ("UI AS DATA, NOT CODE")
+- Saat membangun fitur *Generative UI* di mana AI agent menampilkan dashboard, grafik, tabel, atau form interaktif, **HARAM** merender raw HTML/JS/CSS bebas hasil generasi LLM (rawan serangan XSS dan merusak konsistensi sistem desain).
+- Terapkan prinsip **A2UI (*UI as Data, Not Code*)**: agent wajib mengirim **payload JSON terstruktur** yang memetakan data ke skema komponen resmi aplikasi, lalu frontend (React, Next.js, Jetpack Compose, Flutter) me-rendernya secara native sesuai token desain aktif.
+
