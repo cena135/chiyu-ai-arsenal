@@ -139,3 +139,9 @@ Agar proyek selalu siap dilanjutkan secara mulus antara Gemini (Antigravity) dan
 - Gunakan **Hooks** di *execution loop* untuk menegakkan linter dan aturan keamanan secara otomatis tanpa membebani prompt.
 - Gunakan **Sidecars** untuk menjalankan *background daemon* pendamping yang hemat RAM dan memiliki *auto-restart*.
 - Bungkus alur API atau *network contract* yang berulang menjadi **Skill/CLI deterministik** agar eksekusi cepat dan stabil.
+
+---
+
+## 12. WINDOWS POWERSHELL ANTI-PIPE-HANG & SAFE SYNC STANDARD
+1. **Anti-Pipe-Hang Local Server Spawn:** Haram spawn server lokal (`tsx`, `uvicorn`, `next`, `node`) lewat inherited PowerShell pipe karena menahan handle stdio sehingga background task tetap `RUNNING` permanen walau test selesai. Wajib pakai in-process `TestClient`/Docker, atau redirect `-RedirectStandardOutput`/`-RedirectStandardError` + `taskkill /F /T /PID` di blok `finally` + hard timeout.
+2. **Anti-Binary-Pipe Sync (`tar | ssh`):** Haram mengalirkan binary pipe `tar | ssh` di Windows PowerShell (rawan corrupt/partial sync). Wajib buat arsip `.tar.gz` lokal -> `scp` -> ekstrak remote -> hapus arsip temp -> verifikasi eksistensi file & route hasil build di target.

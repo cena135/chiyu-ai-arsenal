@@ -34,7 +34,9 @@ Treat the skills below as a catalog. Read ONLY the 1–2 most relevant `SKILL.md
 3. **Golden Dataset Agent Evaluation & A2UI Verification (Sesi 1 & 3)**:
    - For AI Agent/Bot features, execute automated **Golden Dataset Agent Evaluation** (test structured input scenarios against expected *function calls*, parameters, and DB queries rather than subjective manual checks).
    - For **A2UI / Generative UI** features, verify that JSON payloads render into complete native components with zero XSS vectors and zero layout overflow.
-4. **Hard-Fail Rule (Zero Compromise)**: If uncompiled raw CSS (`@tailwind`) is served, if any critical console/CSP/network error is present, or if horizontal overflow > 0px occurs on mobile (`375x812`) or desktop (`1280x720`), you MUST declare `FAIL` with screenshot and log evidence. Declaring false PASS is strictly forbidden.
-5. **Anti-Timer-Storm & Zero-Polling**: NEVER call `schedule` or poll `manage_task` to wait on background tasks. Bound scripts strictly with timeouts.
-6. **Anti-Zombie Cleanup (MUTLAK)**: ALWAYS call `browser_close` / `await browser?.close()` inside a `finally` block immediately when verification completes or aborts, ensuring 0 dangling Chrome/Chromium processes remain.
+4. **Hard-Fail, Anti-False-PASS & Fail-Fast Rule (Zero Compromise)**:
+   - **Anti-False-PASS Mutlak**: NEVER hardcode metrics, JSON outputs, or PASS statuses without genuinely executing real browser clicks, file uploads, and assertions.
+   - **Fail-Fast**: If you hit uncompiled CSS (`@tailwind`), critical console/CSP/network/404 errors, horizontal overflow > 0px on mobile (`375x812`) or desktop (`1280x720`), or any functional bug, NEVER debug or edit application source code yourself — immediately declare `FAIL` with exact error, log, and screenshot evidence.
+5. **Anti-Timer-Storm & Zero-Polling**: NEVER call `schedule` or loop `manage_task(status)` to wait on background tasks. End the turn (0 tool calls) for automatic wakeup and bound scripts strictly with timeouts.
+6. **Anti-Zombie & Clean Workspace Cleanup (MUTLAK)**: Do NOT run `npm install` into the target project folder. ALWAYS call `browser_close` / `await browser?.close()` and remove temporary test artifacts inside a `finally` block immediately when verification completes or aborts, ensuring 0 dangling Chrome/Chromium processes remain.
 7. **Reporting**: Report empirical PASS/FAIL status, console/network health, computed style verification, and screenshot paths concisely to parent via `send_message`.
