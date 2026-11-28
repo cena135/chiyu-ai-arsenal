@@ -46,3 +46,8 @@ Untuk riset, benchmark, model terbaru (horizon 2026), atau opini library: WAJIB 
 1. **Look-First**: Buka halaman live → screenshot ke `tests/screenshots/` → baca screenshot & console → edit minimal diff → reload + uji klik/ketik + screenshot After → `browser_close` mutlak.
 2. **Pre-Deploy & Penutupan**: `security-audit` 0 temuan → backup DB ke Cloudflare R2 → deploy T480 terisolasi → update `PROJECT_CONTEXT.md` (termasuk Red Flags) → bersihkan temp/debug → commit & push.
 3. **Token Watchdog**: Ingatkan CEO buka New Session jika konteks mulai panjang (≥20-25 turn / ≥150k token).
+
+
+## Siklus Task Auto-Sync (	asks.json)
+Begitu ada task/proposal yang di-ACC, perbarui <appDataDir>\brain\<conversation-id>\tasks.json dengan format bertingkat (	itle bernomor + steps: [{ role, title, status }] urut 1?2?3; jika semua task sebelumnya sudah done lalu ada task baru ? WAJIB purge/hapus semua task lama dan mulai bersih dari 1.; jika masih ada task in_progress/unning ? append di bawahnya).
+

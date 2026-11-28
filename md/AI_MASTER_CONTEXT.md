@@ -71,3 +71,8 @@ Planner & subagent **proaktif** membaca & mengaktifkan skill/MCP relevan sejak a
 ## 10. GOOGLE DRIVE POLICY
 `G:\My Drive\folder kerja\md` = pusat SOP & referensi. Dilarang menaruh repo kodingan aktif (`.git`, `node_modules`) di Google Drive.
 - **Auto-Sync Drive Wajib**: Setiap perubahan di `C:\Users\Alexander\.gemini\config\` (`GEMINI.md`, `agents/`, `skills/`, `hooks/`, `hooks.json`, `mcp_config.json`, `sidecars/`, `plugins/`) wajib langsung di-sync ke `G:\My Drive\folder kerja\antigravity_pc_sync\config\` di turn yang sama, disertai verifikasi isi & hash/timestamp file langsung.
+
+
+## Siklus Task Auto-Sync (	asks.json)
+Begitu ada task/proposal yang di-ACC, perbarui <appDataDir>\brain\<conversation-id>\tasks.json dengan format bertingkat (	itle bernomor + steps: [{ role, title, status }] urut 1?2?3; jika semua task sebelumnya sudah done lalu ada task baru ? WAJIB purge/hapus semua task lama dan mulai bersih dari 1.; jika masih ada task in_progress/unning ? append di bawahnya).
+
